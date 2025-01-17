@@ -29,7 +29,7 @@ I went to **Hampi** in 2024, a place which had a significant impact on me in ter
 4. **Hosting:**
     - Git & GitHub: For version control and collaboration.
     - Adobe Photoshop: To design and optimize visual assets.
-5. **Other Tools:** Adobe Photoshop for photo editing
+
 
 #### Why this project:
 
