@@ -26,3 +26,5 @@ I went to **Hampi** in 2024, a place which had a significant impact on me in ter
 #### Why this project:
 
 I chose this project to blend my passion for travel and technology, applying web development, multimedia, and content creation skills. It helps me improve design, backend handling, and data presentation while inspiring others to explore Hampi and showcasing my content creation abilities.
+
+Updated readme.
