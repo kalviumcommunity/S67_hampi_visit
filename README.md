@@ -17,11 +17,21 @@ I went to **Hampi** in 2024, a place which had a significant impact on me in ter
 
 #### Tech stack: 
 
-1. **Frontend:** HTML, CSS, JavaScript .
-2. **Backend:**CPP , java.
-3. **Database:** MongoDB for database management.
-4. **Hosting:** Git and Github.
-5. **Other Tools:** Adobe Photoshop for photo editing
+**Frontend:**
+    1. HTML: Structuring web content.
+    2. CSS: Styling with responsive layouts and animations.
+    3. JavaScript: Adding interactivity, maps, and gamified features.
+
+**Backend:**
+    1. C++: Algorithms for personalized recommendations.
+    2. Java: Backend server development and API handling.
+
+**Database:**
+    1.MongoDB: Store monument data and user preferences.
+    
+**Hosting:**
+    1. Git & GitHub: For version control and collaboration.
+    2. Adobe Photoshop: To design and optimize visual assets.
 
 #### Why this project:
 
