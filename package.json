@@ -1,0 +1,19 @@
+{
+  "name": "s67_hampi_visit",
+  "version": "1.0.0",
+  "description": "ASAP project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalviumcommunity/S67_hampi_visit.git"
+  },
+  "author": "kushal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kalviumcommunity/S67_hampi_visit/issues"
+  },
+  "homepage": "https://github.com/kalviumcommunity/S67_hampi_visit#readme"
+}
