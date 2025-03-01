@@ -8,12 +8,14 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "preview:worker":"npm run build && wrangler dev",
+    "preview:worker": "npm run build && wrangler dev",
     "deploy:worker": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.2.0",
+    "tailwind": "^4.0.0",
     "wrangler": "^3.109.2"
   },
   "devDependencies": {
