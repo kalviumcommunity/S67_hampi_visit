@@ -1,11 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const controller = require('./crudController');
+const controller = require("./curdController");
 
-router.get('/items', controller.getAllItems); 
-router.get('/items/:id', controller.getItemById);
-router.post('/items', controller.createItem);  
-router.put('/items/:id', controller.updateItem);
-router.delete('/items/:id', controller.deleteItem);
+// GET request to fetch all attractions
+router.get("/items", controller.getAllItems); 
+
+// GET request to fetch a single attraction by ID
+router.get("/items/:id", controller.getItemById); 
 
 module.exports = router;

@@ -1,100 +1,84 @@
 const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema({
-    name: String,
-    email: { type: String, unique: true },
-    password: String,
-    role: { type: String, enum: ["admin", "user"], default: "user" },
-    createdAt: { type: Date, default: Date.now }
-});
-
-const ProductSchema = new mongoose.Schema({
+// Schema for Tourist Attractions
+const AttractionSchema = new mongoose.Schema({
     name: String,
     description: String,
-    price: Number,
-    stock: Number,
-    categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+    location: String,
+    images: [String], // Array of image URLs
+    history: String,
     createdAt: { type: Date, default: Date.now }
 });
 
-const CategorySchema = new mongoose.Schema({
-    name: String,
-    description: String
-});
-
-const OrderSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    totalPrice: Number,
-    status: { type: String, enum: ["pending", "shipped", "delivered"], default: "pending" },
+// Schema for Historical Information
+const HistorySchema = new mongoose.Schema({
+    title: String,
+    content: String,
+    period: String, // e.g., "Vijayanagara Empire"
+    images: [String],
     createdAt: { type: Date, default: Date.now }
 });
 
-const OrderItemSchema = new mongoose.Schema({
-    orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
-    quantity: Number,
-    price: Number
-});
-
-const PaymentSchema = new mongoose.Schema({
-    orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    amount: Number,
-    status: { type: String, enum: ["pending", "completed", "failed"], default: "pending" },
-    paymentMethod: String
-});
-
+// Schema for Visitor Reviews
 const ReviewSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+    visitorName: String,
+    email: String,
+    attractionId: { type: mongoose.Schema.Types.ObjectId, ref: "Attraction" },
     rating: { type: Number, min: 1, max: 5 },
     comment: String,
     createdAt: { type: Date, default: Date.now }
 });
 
-const AddressSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    street: String,
-    city: String,
-    state: String,
-    zipCode: String,
-    country: String
-});
-
-const AdminSchema = new mongoose.Schema({
+// Schema for Guides
+const GuideSchema = new mongoose.Schema({
     name: String,
-    email: { type: String, unique: true },
-    password: String,
-    role: { type: String, enum: ["superadmin", "admin"], default: "admin" }
+    contact: String,
+    languages: [String], // e.g., ["English", "Kannada", "Hindi"]
+    experience: Number, // Years of experience
+    bio: String,
+    image: String // Guide profile picture URL
 });
 
-const CouponSchema = new mongoose.Schema({
-    code: { type: String, unique: true },
-    discount: Number,
-    expiryDate: Date,
-    isActive: { type: Boolean, default: true }
+// Schema for Visitor Information (optional)
+const VisitorSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    favoriteAttractions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Attraction" }],
+    createdAt: { type: Date, default: Date.now }
 });
 
-const User = mongoose.model("User", UserSchema);
-const Product = mongoose.model("Product", ProductSchema);
-const Category = mongoose.model("Category", CategorySchema);
-const Order = mongoose.model("Order", OrderSchema);
-const OrderItem = mongoose.model("OrderItem", OrderItemSchema);
-const Payment = mongoose.model("Payment", PaymentSchema);
+// Schema for Image Gallery
+const GallerySchema = new mongoose.Schema({
+    title: String,
+    description: String,
+    images: [String], // URLs of images
+    createdAt: { type: Date, default: Date.now }
+});
+
+// Schema for Events & Festivals
+const EventSchema = new mongoose.Schema({
+    name: String,
+    date: Date,
+    description: String,
+    location: String,
+    images: [String], // Images related to the event
+    createdAt: { type: Date, default: Date.now }
+});
+
+const Attraction = mongoose.model("Attraction", AttractionSchema);
+const History = mongoose.model("History", HistorySchema);
 const Review = mongoose.model("Review", ReviewSchema);
-const Address = mongoose.model("Address", AddressSchema);
-const Admin = mongoose.model("Admin", AdminSchema);
-const Coupon = mongoose.model("Coupon", CouponSchema);
+const Guide = mongoose.model("Guide", GuideSchema);
+const Visitor = mongoose.model("Visitor", VisitorSchema);
+const Gallery = mongoose.model("Gallery", GallerySchema);
+const Event = mongoose.model("Event", EventSchema);
 
 module.exports = {
-    User,
-    Product,
-    Category,
-    Order,
-    OrderItem,
-    Payment,
+    Attraction,
+    History,
     Review,
-    Address,
-    Admin,
-    Coupon
+    Guide,
+    Visitor,
+    Gallery,
+    Event
 };
