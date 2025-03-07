@@ -1,36 +1,76 @@
-const items = []; // Temporary in-memory storage
+const mongoose = require("mongoose");
 
-exports.getAllItems = (req, res) => {
-    res.json(items);
-};
+// Connect to MongoDB (Modify with your database URI)
+mongoose.connect("mongodb://localhost:27017/hampiVisitDB", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => console.log("MongoDB connected"))
+.catch(err => console.log(err));
 
-exports.getItemById = (req, res) => {
-    const item = items.find(i => i.id === req.params.id);
-    item ? res.json(item) : res.status(404).json({ message: "Item not found" });
-};
+// Define Schema for Items (e.g., Hampi Attractions)
+const itemSchema = new mongoose.Schema({
+    name: String,
+    description: String,
+    location: String,
+    images: [String], // Array of image URLs
+    history: String,
+    createdAt: { type: Date, default: Date.now }
+});
 
-exports.createItem = (req, res) => {
-    const newItem = { id: Date.now().toString(), ...req.body };
-    items.push(newItem);
-    res.status(201).json(newItem);
-};
+const Item = mongoose.model("Item", itemSchema); // Creating model
 
-exports.updateItem = (req, res) => {
-    const index = items.findIndex(i => i.id === req.params.id);
-    if (index !== -1) {
-        items[index] = { ...items[index], ...req.body };
-        res.json(items[index]);
-    } else {
-        res.status(404).json({ message: "Item not found" });
+// CRUD Controllers
+
+// Get all items
+exports.getAllItems = async (req, res) => {
+    try {
+        const items = await Item.find();
+        res.json(items);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };
 
-exports.deleteItem = (req, res) => {
-    const index = items.findIndex(i => i.id === req.params.id);
-    if (index !== -1) {
-        items.splice(index, 1);
-        res.json({ message: "Item deleted" });
-    } else {
-        res.status(404).json({ message: "Item not found" });
+// Get an item by ID
+exports.getItemById = async (req, res) => {
+    try {
+        const item = await Item.findById(req.params.id);
+        if (!item) return res.status(404).json({ message: "Item not found" });
+        res.json(item);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Create a new item
+exports.createItem = async (req, res) => {
+    try {
+        const newItem = new Item(req.body);
+        await newItem.save();
+        res.status(201).json(newItem);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+// Update an existing item
+exports.updateItem = async (req, res) => {
+    try {
+        const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedItem) return res.status(404).json({ message: "Item not found" });
+        res.json(updatedItem);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Delete an item
+exports.deleteItem = async (req, res) => {
+    try {
+        const deletedItem = await Item.findByIdAndDelete(req.params.id);
+        if (!deletedItem) return res.status(404).json({ message: "Item not found" });
+        res.json({ message: "Item deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };

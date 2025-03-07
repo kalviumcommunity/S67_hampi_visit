@@ -1,27 +1,47 @@
 const connectDB = require("./db");
-const { User, Product, Category } = require("./schema");
+const { Attraction } = require("./schema");
 
 const seedDatabase = async () => {
-    await connectDB();
+    try {
+        console.log("🌍 Connecting to MongoDB...");
+        await connectDB();
+        console.log("✅ MongoDB Connected!");
 
-    await User.deleteMany({});
-    await Product.deleteMany({});
-    await Category.deleteMany({});
+        console.log("🗑 Clearing existing data...");
+        await Attraction.deleteMany({});
+        console.log("✅ Data Cleared!");
 
-    const category = await Category.create({ name: "Electronics", description: "Gadgets & Devices" });
+        const attractions = [
+            {
+                name: "Virupaksha Temple",
+                description: "A historic temple dedicated to Lord Shiva, located in Hampi.",
+                images: ["https://example.com/virupaksha.jpg"],
+                location: "Hampi, Karnataka",
+            },
+            {
+                name: "Vittala Temple",
+                description: "Famous for its stone chariot and musical pillars.",
+                images: ["https://example.com/vittala.jpg"],
+                location: "Hampi, Karnataka",
+            },
+            {
+                name: "Lotus Mahal",
+                description: "An elegant Indo-Islamic architectural palace in Hampi.",
+                images: ["https://example.com/lotusmahal.jpg"],
+                location: "Hampi, Karnataka",
+            }
+        ];
 
-    await Product.create({
-        name: "Laptop",
-        description: "Gaming Laptop",
-        price: 1200,
-        stock: 10,
-        categoryId: category._id,
-    });
+        console.log("📤 Inserting new data...");
+        const insertedData = await Attraction.insertMany(attractions);
+        console.log("✅ Inserted Data:", insertedData);
 
-    await User.create({ name: "John Doe", email: "john@example.com", password: "hashedpassword" });
-
-    console.log("Database Seeded!");
-    process.exit();
+        console.log("🎉 Database Seeded Successfully!");
+        process.exit();
+    } catch (error) {
+        console.error("❌ Error seeding database:", error);
+        process.exit(1);
+    }
 };
 
 seedDatabase();
