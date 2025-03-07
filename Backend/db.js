@@ -1,20 +1,19 @@
 const mongoose = require("mongoose");
-require("dotenv").config(); // Load environment variables
+require("dotenv").config(); // Load .env variables
 
 const connectDB = async () => {
     try {
-        if (mongoose.connection.readyState === 1) {
-            console.log("MongoDB already connected!");
-            return;
-        }
-
         const uri = process.env.MONGO_URI;
         if (!uri) {
-            throw new Error("MONGO_URI is not defined in .env file");
+            throw new Error("MONGO_URI is undefined. Check your .env file.");
         }
 
-        await mongoose.connect(uri, { dbName: "hampi_visit" }); // No need for deprecated options
-        console.log("MongoDB Connected Successfully!");
+        await mongoose.connect(uri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+
+        console.log("MongoDB connected successfully.");
     } catch (error) {
         console.error("MongoDB connection error:", error);
         process.exit(1);

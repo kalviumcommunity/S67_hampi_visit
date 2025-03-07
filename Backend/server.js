@@ -1,28 +1,45 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
-const connectDB = require("./db");
-const { Attraction } = require("./schema");
-const itemRoutes = require("./routes"); // Import additional routes
+const { Attraction } = require("./schema"); 
+require("dotenv").config();
 
 const app = express();
+
 app.use(express.json());
-app.use(cors());
+app.use(cors()); 
 
-// Connect to Database
-connectDB();
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
-// GET Route to Fetch Attractions
-app.get("/", async (req, res) => {
+// **Get Attractions** (Existing)
+app.get("/api/attractions", async (req, res) => {
     try {
         const attractions = await Attraction.find();
         res.json(attractions);
-    } catch (error) {
-        res.status(500).json({ message: "Server Error", error });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
-// Use Routes
-app.use("/api", itemRoutes);
+// **Add New Attraction (New Route)**
+app.post("/api/attractions", async (req, res) => {
+    try {
+        const { name, description, location } = req.body;
+        if (!name || !description || !location) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
+        const newAttraction = new Attraction({ name, description, location });
+        await newAttraction.save();
+        res.status(201).json(newAttraction); 
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

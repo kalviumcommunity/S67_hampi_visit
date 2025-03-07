@@ -1,29 +1,50 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 
-const HampiAttractions = () => {
-  const [items, setItems] = useState([]);
+const API_URL = "http://localhost:5000/api/attractions";
 
-  useEffect(() => {
-    axios.get("http://localhost:5000/api/items")
-      .then(response => setItems(response.data))
-      .catch(error => console.error("Error fetching data:", error));
-  }, []);
+const AttractionsList = () => {
+    const [attractions, setAttractions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  return (
-    <div>
-      <h1>Hampi Attractions</h1>
-      <ul>
-        {items.map(item => (
-          <li key={item._id}>
-            <h3>{item.name}</h3>
-            <p>{item.description}</p>
-            <img src={item.images[0]} alt={item.name} width="200" />
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    useEffect(() => {
+        console.log("📡 Fetching data from API...");
+        fetch(API_URL)
+            .then((res) => {
+                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+                return res.json();
+            })
+            .then((data) => {
+                console.log("📥 Received data:", data);
+                setAttractions(data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.error("❌ Error fetching attractions:", err);
+                setError(err.message);
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
+
+    return (
+        <div>
+            <h2>Hampi Attractions</h2>
+            {attractions.length === 0 ? (
+                <p>No attractions found.</p>
+            ) : (
+                attractions.map((attraction) => (
+                    <div key={attraction._id}>
+                        <h3>{attraction.name}</h3>
+                        <p>{attraction.description}</p>
+                        <img src={attraction.images[0]} alt={attraction.name} width="200" />
+                    </div>
+                ))
+            )}
+        </div>
+    );
 };
 
-export default HampiAttractions;
+export default AttractionsList;
