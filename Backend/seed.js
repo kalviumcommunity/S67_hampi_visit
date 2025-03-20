@@ -2,14 +2,15 @@ const connectDB = require("./db");
 const { Attraction } = require("./schema");
 
 const seedDatabase = async () => {
+    console.log(`[${new Date().toISOString()}] 🌍 Connecting to MongoDB...`);
+    
     try {
-        console.log("🌍 Connecting to MongoDB...");
         await connectDB();
-        console.log("✅ MongoDB Connected!");
+        console.log(`[${new Date().toISOString()}] ✅ MongoDB Connected!`);
 
-        console.log("🗑 Clearing existing data...");
+        console.log(`[${new Date().toISOString()}] 🗑 Clearing existing data...`);
         await Attraction.deleteMany({});
-        console.log("✅ Data Cleared!");
+        console.log(`[${new Date().toISOString()}] ✅ Data Cleared!`);
 
         const attractions = [
             {
@@ -32,15 +33,16 @@ const seedDatabase = async () => {
             }
         ];
 
-        console.log("📤 Inserting new data...");
+        console.log(`[${new Date().toISOString()}] 📤 Inserting new data...`);
         const insertedData = await Attraction.insertMany(attractions);
-        console.log("✅ Inserted Data:", insertedData);
+        console.log(`[${new Date().toISOString()}] ✅ Inserted Data:`, insertedData);
 
-        console.log("🎉 Database Seeded Successfully!");
-        process.exit();
+        console.log(`[${new Date().toISOString()}] 🎉 Database Seeded Successfully!`);
     } catch (error) {
-        console.error("❌ Error seeding database:", error);
-        process.exit(1);
+        console.error(`[${new Date().toISOString()}] ❌ Error seeding database:`, error);
+    } finally {
+        console.log(`[${new Date().toISOString()}] 🔄 Closing database connection...`);
+        process.exit();
     }
 };
 
