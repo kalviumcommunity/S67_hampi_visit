@@ -1,4 +1,4 @@
-import './App.css';
+import "./index.css";
 import AboutUs from '../src/page/aboutus';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -7,6 +7,8 @@ import HampiAttractions from "../src/page/hampilist";
 import EntityForm from "../src/page/add"
 import ManageAttractions from "./page/manageattraction";
 import UpdateAttraction from "./page/updateattraction"
+import LoginPage from './page/login';
+import SignupPage from './page/signup';
 
 
 export const App = () => {
@@ -14,7 +16,9 @@ export const App = () => {
     <Router>
       <>
       <Routes>
-        <Route path='/' element={<AboutUs />}/>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path='/home' element={<AboutUs />}/>
         <Route path="/entity" element={<Entity />} />
         <Route path='/list' element={<HampiAttractions/>} />
         <Route path='/add' element={<EntityForm />} />
